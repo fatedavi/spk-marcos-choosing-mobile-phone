@@ -14,6 +14,8 @@
                             <th class="px-3 py-3 text-center font-semibold text-gray-600">Bandingkan</th>
                             <th class="px-3 py-3 text-left font-semibold text-gray-600">Kode</th>
                             <th class="px-3 py-3 text-left font-semibold text-gray-600">Nama Smartphone</th>
+                            <th class="px-3 py-3 text-left font-semibold text-gray-600">Brand</th>
+                            <th class="px-3 py-3 text-left font-semibold text-gray-600">Kelas</th>
                             @foreach ($criteria as $criterion)
                                 <th class="px-3 py-3 text-center font-semibold text-gray-600">{{ $criterion->code }}<br><span class="font-normal text-gray-400">{{ $criterion->name }}</span></th>
                             @endforeach
@@ -27,6 +29,8 @@
                                 </td>
                                 <td class="px-3 py-3 font-medium">{{ $alternative->code }}</td>
                                 <td class="px-3 py-3 whitespace-nowrap">{{ $alternative->name }}</td>
+                                <td class="px-3 py-3 whitespace-nowrap">{{ $alternative->brand ?: '-' }}</td>
+                                <td class="px-3 py-3 whitespace-nowrap">{{ $alternative->kelas ?: '-' }}</td>
                                 @foreach ($criteria as $criterion)
                                     @php $value = $alternative->values->firstWhere('criteria_id', $criterion->id); @endphp
                                     <td class="px-3 py-3 text-center">

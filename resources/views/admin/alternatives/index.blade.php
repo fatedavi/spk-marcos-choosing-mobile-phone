@@ -16,6 +16,8 @@
                         <tr>
                             <th class="px-3 py-3 text-left font-semibold text-gray-600 sticky left-0 bg-gray-50">Kode</th>
                             <th class="px-3 py-3 text-left font-semibold text-gray-600 sticky left-14 bg-gray-50">Nama</th>
+                            <th class="px-3 py-3 text-left font-semibold text-gray-600">Brand</th>
+                            <th class="px-3 py-3 text-left font-semibold text-gray-600">Kelas</th>
                             @foreach ($criteria as $criterion)
                                 <th class="px-3 py-3 text-center font-semibold text-gray-600">{{ $criterion->code }}<br><span class="font-normal text-gray-400">{{ $criterion->unit }}</span></th>
                             @endforeach
@@ -27,6 +29,8 @@
                             <tr>
                                 <td class="px-3 py-3 font-medium sticky left-0 bg-white">{{ $alternative->code }}</td>
                                 <td class="px-3 py-3 whitespace-nowrap sticky left-14 bg-white">{{ $alternative->name }}</td>
+                                <td class="px-3 py-3 whitespace-nowrap">{{ $alternative->brand ?: '-' }}</td>
+                                <td class="px-3 py-3 whitespace-nowrap">{{ $alternative->kelas ?: '-' }}</td>
                                 @foreach ($criteria as $criterion)
                                     @php $value = $alternative->values->firstWhere('criteria_id', $criterion->id); @endphp
                                     <td class="px-3 py-3 text-center">
@@ -43,7 +47,7 @@
                                 </td>
                             </tr>
                         @empty
-                            <tr><td colspan="{{ $criteria->count() + 3 }}" class="px-4 py-6 text-center text-gray-500">Belum ada alternatif.</td></tr>
+                            <tr><td colspan="{{ $criteria->count() + 5 }}" class="px-4 py-6 text-center text-gray-500">Belum ada alternatif.</td></tr>
                         @endforelse
                     </tbody>
                 </table>

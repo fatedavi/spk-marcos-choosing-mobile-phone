@@ -38,6 +38,8 @@ class AlternativeController extends Controller
             $alternative = Alternative::create([
                 'code' => strtoupper($data['code']),
                 'name' => $data['name'],
+                'brand' => $data['brand'] ?: null,
+                'kelas' => $data['kelas'] ?: null,
             ]);
             $this->syncValues($alternative, $criteria, $data['values']);
         });
@@ -62,6 +64,8 @@ class AlternativeController extends Controller
             $alternative->update([
                 'code' => strtoupper($data['code']),
                 'name' => $data['name'],
+                'brand' => $data['brand'] ?: null,
+                'kelas' => $data['kelas'] ?: null,
             ]);
             $this->syncValues($alternative, $criteria, $data['values']);
         });
@@ -81,6 +85,8 @@ class AlternativeController extends Controller
         $rules = [
             'code' => 'required|string|max:10|unique:alternatives,code'.($id ? ','.$id : ''),
             'name' => 'required|string|max:150',
+            'brand' => 'nullable|string|max:100',
+            'kelas' => 'nullable|string|max:100',
             'values' => 'required|array|size:'.$criteria->count(),
         ];
         foreach ($criteria as $criterion) {

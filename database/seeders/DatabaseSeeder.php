@@ -3,13 +3,11 @@
 namespace Database\Seeders;
 
 use App\Imports\SpkWorkbookImport;
-use App\Models\Alternative;
-use App\Models\AlternativeValue;
 use App\Models\Criterion;
 use App\Models\Questionnaire;
 use App\Models\SubCriterion;
 use App\Models\User;
-use App\Services\ScoreConverterService;
+use App\Services\AlternativeSyncService;
 use App\Services\WeightService;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -18,6 +16,8 @@ use RuntimeException;
 
 class DatabaseSeeder extends Seeder
 {
+    public function __construct(private AlternativeSyncService $alternativeSync) {}
+
     private array $questionnaire = [
         'C1' => [33, 15, 1, 4, 2],
         'C2' => [31, 18, 3, 3, 0],
@@ -41,7 +41,6 @@ class DatabaseSeeder extends Seeder
         Excel::import($importer, $path);
 
         $weights = (new WeightService)->normalize($importer->weights());
-        $scoreConverter = new ScoreConverterService;
 
         User::updateOrCreate(['email' => 'admin@spk.test'], [
             'name' => 'Administrator', 'password' => Hash::make('password'), 'role' => 'admin',
@@ -82,21 +81,6 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
-        foreach ($importer->alternatives() as $data) {
-            $alternative = Alternative::updateOrCreate(['code' => $data['code']], ['name' => trim($data['name'])]);
-
-            foreach (array_values($criteriaData) as $i => $criterionData) {
-                $criterion = $criteriaByCode[$criterionData['code']];
-                $rawValue = (float) $data['values'][$i];
-
-                AlternativeValue::updateOrCreate(
-                    ['alternative_id' => $alternative->id, 'criteria_id' => $criterion->id],
-                    [
-                        'raw_value' => $rawValue,
-                        'score' => $scoreConverter->toScore($criterion, $rawValue),
-                    ]
-                );
-            }
-        }
+        $this->alternativeSync->sync($importer->alternatives());
     }
 }

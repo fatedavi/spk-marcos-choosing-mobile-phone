@@ -18,6 +18,8 @@ class SpkDataImport implements ToCollection
             }
 
             $name = trim((string) ($row[0] ?? ''));
+            $brand = trim((string) ($row[1] ?? ''));
+            $kelas = trim((string) ($row[2] ?? ''));
 
             if ($name === '') {
                 continue;
@@ -36,6 +38,8 @@ class SpkDataImport implements ToCollection
             $this->alternatives[] = [
                 'code' => 'A'.(count($this->alternatives) + 1),
                 'name' => $name,
+                'brand' => $brand !== '' ? $brand : null,
+                'kelas' => $kelas !== '' ? $kelas : null,
                 'values' => $values,
             ];
         }

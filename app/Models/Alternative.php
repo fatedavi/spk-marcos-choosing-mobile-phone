@@ -10,7 +10,7 @@ class Alternative extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['code', 'name'];
+    protected $fillable = ['code', 'name', 'brand', 'kelas'];
 
     public function values(): HasMany
     {

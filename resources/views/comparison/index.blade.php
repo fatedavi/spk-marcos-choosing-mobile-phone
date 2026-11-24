@@ -18,7 +18,11 @@
                             <input type="checkbox" name="alternatives[]" value="{{ $alternative->code }}"
                                 {{ in_array($alternative->code, old('alternatives', $selectedCodes), true) ? 'checked' : '' }}
                                 class="rounded border-gray-300 text-indigo-600 shadow-sm">
-                            <span><strong>{{ $alternative->code }}</strong> — {{ $alternative->name }}</span>
+                            <span><strong>{{ $alternative->code }}</strong> — {{ $alternative->name }}
+                                @if ($alternative->brand || $alternative->kelas)
+                                    <span class="text-xs text-gray-500">({{ trim(($alternative->brand ?? '').' '.($alternative->kelas ?? '')) }})</span>
+                                @endif
+                            </span>
                         </label>
                     @endforeach
                 </div>

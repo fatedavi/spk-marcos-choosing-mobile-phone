@@ -34,10 +34,15 @@ class SpkWorkbookImportTest extends TestCase
         $this->assertSame('cost', $c1->type);
         $this->assertEqualsWithDelta(120.0, (float) $c6->subCriteria()->where('score', 5)->value('min_value'), 0.000001);
 
+        $a1 = Alternative::where('code', 'A1')->firstOrFail();
         $a3 = Alternative::where('code', 'A3')->firstOrFail();
         $a15 = Alternative::where('code', 'A15')->firstOrFail();
         $a22 = Alternative::where('code', 'A22')->firstOrFail();
 
+        $this->assertSame('Asus', $a1->brand);
+        $this->assertSame('Flagship', $a1->kelas);
+        $this->assertSame('Infinix', $a22->brand);
+        $this->assertSame('Midrange', $a22->kelas);
         $this->assertEqualsWithDelta(1024.0, $this->rawValue($a3, $c7), 0.01);
         $this->assertEqualsWithDelta(9999000.0, $this->rawValue($a15, $c1), 0.01);
         $this->assertEqualsWithDelta(1265000.0, $this->rawValue($a22, $c2), 0.01);
